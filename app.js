@@ -10,6 +10,7 @@ mongoose.connect('mongodb://localhost/ball2024')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var balls = require('./routes/balls');
+
 var app = express();
 
 // view engine setup
