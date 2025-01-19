@@ -1,14 +1,16 @@
 var express = require('express');
 var router = express.Router();
 var Ball = require('../models/ball').Ball;
+var checkAuth = require("../middlewares/checkAuth.js");
+
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   res.send('Новый маршрутизатор, для маршрутов, начинающихся с balls');
 });
 
-/* Страница машин */
-router.get("/:nick", async function (req, res, next) {
+/* Страница мячиков */
+router.get("/:nick", checkAuth, async function (req, res, next) {
   var balls = await Ball.find({ nick: req.params.nick });
   console.log(balls)
   if (!balls.length) return next(new Error(" У нас нет информации об этом мяче! "))
