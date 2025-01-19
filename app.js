@@ -6,25 +6,12 @@ var logger = require('morgan');
 var mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/ball2024')
 var session = require("express-session")
-var MongoStore = require('connect-mongo');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var balls = require('./routes/balls');
 
 var app = express();
-
-app.use(session({
-  secret: "Balls",
-  cookie: { maxAge: 60 * 1000 },
-  proxy: true,
-  resave: true,
-  saveUninitialized: true,
-  store: MongoStore.create({
-    mongoUrl:
-      'mongodb://localhost/ball2024'
-  })
-}))
 
 // view engine setup
 app.engine('ejs', require('ejs-locals'));
@@ -37,6 +24,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+var MongoStore = require('connect-mongo');
+app.use(session({
+  secret: "Balls",
+  cookie: { maxAge: 60 * 1000 },
+  proxy: true,
+  resave: true,
+  saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl:
+      'mongodb://localhost/ball2024'
+  })
+}))
 
 app.use(function (req, res, next) {
   req.session.counter = req.session.counter + 1 || 1
